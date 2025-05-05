@@ -60,23 +60,25 @@ public class ClienteService {
         return cliente;
     }
 
-    public Cliente create(@Valid ClienteRequest clienteRequest, TipoCliente tipoCliente, IndirizzoRequest indirizzoSedeLegale, IndirizzoRequest indirizzoSedeOperativa, String comune) {
+    public Cliente create(@Valid ClienteFullRequest clienteFullRequest, String comuneSedeLegale, String comuneSedeOperativa, TipoCliente tipoCliente) {
         Cliente cliente = new Cliente();
-        BeanUtils.copyProperties(clienteRequest, cliente);
+        BeanUtils.copyProperties(clienteFullRequest.getClienteRequest(), cliente);
         cliente.setTipoCliente(tipoCliente);
 
-        Indirizzo indirizzoSedeLegale1 = indirizzoService.toEntity(indirizzoSedeLegale);
-        cliente.setIndirizzoSedeLegale(indirizzoSedeLegale1);
-        Comune comune1 = comuneRepository.findByNome(comune);
-        cliente.getIndirizzoSedeLegale().setComune(comune1);
+        Indirizzo indirizzoSedeLegale = indirizzoService.toEntity(clienteFullRequest.getIndirizzoSedeLegale());
+        Comune comune1 = comuneRepository.findByNome(comuneSedeLegale);
+        indirizzoSedeLegale.setComune(comune1);
+        cliente.setIndirizzoSedeLegale(indirizzoSedeLegale);
 
-        Indirizzo indirizzoSedeOperativa1 = indirizzoService.toEntity(indirizzoSedeOperativa);
-        cliente.setIndirizzoSedeOperativa(indirizzoSedeOperativa1);
-        cliente.getIndirizzoSedeOperativa().setComune(comune1);
+        Indirizzo indirizzoSedeOperativa = indirizzoService.toEntity(clienteFullRequest.getIndirizzoSedeOperativa());
+        Comune comune2 = comuneRepository.findByNome(comuneSedeOperativa);
+        indirizzoSedeOperativa.setComune(comune2);
+        cliente.setIndirizzoSedeOperativa(indirizzoSedeOperativa);
 
         clienteRepository.save(cliente);
         return cliente;
     }
+
 
     public Cliente update(Long id, @Valid ClienteRequest clienteRequest) {
         Cliente cliente = clienteRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Cliente non trovato"));

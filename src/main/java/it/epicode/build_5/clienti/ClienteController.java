@@ -35,10 +35,10 @@ public class ClienteController {
     }
 
     @PostMapping
-    @ResponseStatus (HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("isAuthenticated()")
-    private Cliente create(@RequestBody @Valid ClienteRequest clienteRequest, @RequestParam TipoCliente tipoCliente, @RequestParam IndirizzoRequest indirizzoSedeLegale, @RequestParam  IndirizzoRequest indirizzoSedeOperativa , @RequestParam String comune ) {
-        return clienteService.create(clienteRequest, tipoCliente, indirizzoSedeLegale, indirizzoSedeOperativa, comune );
+    public Cliente create(@RequestBody @Valid ClienteFullRequest clienteFullRequest,  String comuneSedeLegale, String comuneSedeOperativa, TipoCliente tipoCliente) {
+        return clienteService.create(clienteFullRequest, comuneSedeLegale, comuneSedeOperativa, tipoCliente);
     }
 
     @PutMapping("/{id}")
