@@ -15,9 +15,12 @@ public class Comune {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column(name = "codice_provincia")
+    private String codiceProvincia;
+    @Column(name = "codice_comune")
+    private String codiceComune;
     private String nome;
-    private String provincia;
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "provincia")
+    private Provincia provincia;
 }
