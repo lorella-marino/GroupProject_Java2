@@ -36,9 +36,9 @@ public class Cliente {
     private String cognomeContatto;
     private String telefonoContatto;
     private String logoAziendale;
-    @OneToOne
+    @OneToOne (cascade={CascadeType.REMOVE, CascadeType.PERSIST})
     private Indirizzo indirizzoSedeLegale;
-    @OneToOne
+    @OneToOne (cascade={CascadeType.REMOVE, CascadeType.PERSIST})
     private Indirizzo indirizzoSedeOperativa;
     @Enumerated (EnumType.STRING)
     private TipoCliente tipoCliente;

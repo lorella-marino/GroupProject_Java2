@@ -16,22 +16,13 @@ import java.util.List;
 @NoArgsConstructor
 public class ClienteResponse {
     private Long id;
-    private AppUser appUser;
     private String ragioneSociale;
     private String partitaIva;
     private String email;
-    private String dataInserimento;
-    private String dataUltimoContatto;
     private String fatturatoAnnuale;
     private String pec;
     private String telefono;
-    private String emailContatto;
-    private String nomeContatto;
-    private String cognomeContatto;
-    private String telefonoContatto;
-    private String logoAziendale;
-    private Indirizzo indirizzoSedeLegale;
-    private Indirizzo indirizzoSedeOperativa;
+    private String indirizzoSedeLegale;
+    private String indirizzoSedeOperativa;
     private TipoCliente tipoCliente;
-    private List<Fattura> fatture = new ArrayList<>();
 }

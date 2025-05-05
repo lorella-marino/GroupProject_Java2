@@ -1,9 +1,13 @@
 package it.epicode.build_5.clienti;
 
+import it.epicode.build_5.comuni.Comune;
+import it.epicode.build_5.indirizzi.Indirizzo;
+import it.epicode.build_5.indirizzi.IndirizzoRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,18 +30,19 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    private ClienteResponse findById(@PathVariable Long id) {
+    private Cliente findById(@PathVariable Long id) {
         return clienteService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus (HttpStatus.CREATED)
-    private ClienteResponse create(@RequestBody @Valid ClienteRequest clienteRequest) {
-        return clienteService.create(clienteRequest);
+    @PreAuthorize("isAuthenticated()")
+    private Cliente create(@RequestBody @Valid ClienteRequest clienteRequest, @RequestParam TipoCliente tipoCliente, @RequestParam IndirizzoRequest indirizzoSedeLegale, @RequestParam  IndirizzoRequest indirizzoSedeOperativa , @RequestParam String comune ) {
+        return clienteService.create(clienteRequest, tipoCliente, indirizzoSedeLegale, indirizzoSedeOperativa, comune );
     }
 
     @PutMapping("/{id}")
-    private ClienteResponse update(@PathVariable Long id, @RequestBody @Valid ClienteRequest clienteRequest) {
+    private Cliente update(@PathVariable Long id, @RequestBody @Valid ClienteRequest clienteRequest) {
         return clienteService.update(id, clienteRequest);
     }
 

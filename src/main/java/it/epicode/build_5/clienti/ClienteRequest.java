@@ -1,5 +1,6 @@
 package it.epicode.build_5.clienti;
 
+import it.epicode.build_5.indirizzi.Indirizzo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,4 @@ public class ClienteRequest {
     private String nomeContatto;
     private String cognomeContatto;
     private String telefonoContatto;
-    private String indirizzoSedeLegale;
-    private String indirizzoSedeOperativa;
-    private TipoCliente tipoCliente;
 }
