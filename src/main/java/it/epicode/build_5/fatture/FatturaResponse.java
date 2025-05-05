@@ -1,27 +1,17 @@
 package it.epicode.build_5.fatture;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.epicode.build_5.clienti.Cliente;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "fatture")
-
-public class Fattura {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+public class FatturaResponse {
     private Long id;
+    private Long idCliente;
     private String data;
     private String importo;
     private String numero;
-    @ManyToOne
-    @JsonIgnore
-    private Cliente cliente;
-
 }

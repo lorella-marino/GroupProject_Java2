@@ -36,7 +36,6 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("isAuthenticated()")
     public Cliente create(@RequestBody @Valid ClienteFullRequest clienteFullRequest,  String comuneSedeLegale, String comuneSedeOperativa, TipoCliente tipoCliente) {
         return clienteService.create(clienteFullRequest, comuneSedeLegale, comuneSedeOperativa, tipoCliente);
     }

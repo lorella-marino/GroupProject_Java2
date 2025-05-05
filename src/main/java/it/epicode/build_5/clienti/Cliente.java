@@ -21,8 +21,6 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @OneToOne(cascade={CascadeType.REMOVE, CascadeType.PERSIST})
-    private AppUser appUser;
     private String ragioneSociale;
     private String partitaIva;
     private String email;
@@ -42,6 +40,6 @@ public class Cliente {
     private Indirizzo indirizzoSedeOperativa;
     @Enumerated (EnumType.STRING)
     private TipoCliente tipoCliente;
-    @OneToMany
+    @OneToMany (cascade = CascadeType.PERSIST)
     private List<Fattura> fatture = new ArrayList<>();
 }
