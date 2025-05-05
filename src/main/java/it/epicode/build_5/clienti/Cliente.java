@@ -32,5 +32,4 @@ public class Cliente {
     private String indirizzoSedeOperativa;
     @Enumerated (EnumType.STRING)
     private TipoCliente tipoCliente;
-
 }
