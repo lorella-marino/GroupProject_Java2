@@ -12,16 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "clienti")
-
-public class Cliente {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+public class ClienteResponse {
     private Long id;
-    @OneToOne(cascade={CascadeType.REMOVE, CascadeType.PERSIST})
     private AppUser appUser;
     private String ragioneSociale;
     private String partitaIva;
@@ -36,12 +30,8 @@ public class Cliente {
     private String cognomeContatto;
     private String telefonoContatto;
     private String logoAziendale;
-    @OneToOne
     private Indirizzo indirizzoSedeLegale;
-    @OneToOne
     private Indirizzo indirizzoSedeOperativa;
-    @Enumerated (EnumType.STRING)
     private TipoCliente tipoCliente;
-    @OneToMany
     private List<Fattura> fatture = new ArrayList<>();
 }
