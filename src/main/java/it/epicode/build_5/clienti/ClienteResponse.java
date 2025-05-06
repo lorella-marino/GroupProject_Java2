@@ -19,6 +19,8 @@ public class ClienteResponse {
     private String ragioneSociale;
     private String partitaIva;
     private String email;
+    private String dataInserimento;
+    private String dataUltimoContatto;
     private String fatturatoAnnuale;
     private String pec;
     private String telefono;

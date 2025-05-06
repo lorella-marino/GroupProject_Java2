@@ -5,6 +5,7 @@ import it.epicode.build_5.indirizzi.Indirizzo;
 import it.epicode.build_5.indirizzi.IndirizzoRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,5 +50,22 @@ public class ClienteController {
     @ResponseStatus (HttpStatus.NO_CONTENT)
     private void delete(@PathVariable Long id) {
         clienteService.delete(id);
+    }
+    
+    @GetMapping("/sorted")
+    public Page<ClienteResponse> getSortedClients(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "ragioneSociale") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+        return clienteService.findAllSorted(page, size, sortBy, direction);
+    }
+    
+    @GetMapping("/sorted/provincia")
+    public Page<ClienteResponse> getSortedByProvincia(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String direction) {
+        return clienteService.findAllOrderByProvincia(page, size, direction);
     }
 }
