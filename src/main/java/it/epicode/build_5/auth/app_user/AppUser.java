@@ -25,13 +25,12 @@ public class AppUser implements UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
-    private String email;
-
     @Column(nullable = false)
     @ToString.Exclude
     @JsonIgnore
     private String password;
 
+    private String email;
     private String nome;
     private String cognome;
     private String avatar;
@@ -53,18 +52,23 @@ public class AppUser implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public AppUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this(username, password, true, true, true, true, authorities);
+    public AppUser(String username, String password, String email, String nome, String cognome , String avatar, Collection<? extends GrantedAuthority> authorities) {
+        this(username, password, email, nome, cognome, avatar, true, true, true, true, authorities);
     }
 
-    public AppUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public AppUser(String username, String password, String email, String nome, String cognome , String avatar, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.avatar = avatar;
         this.enabled = enabled;
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
         this.accountNonLocked = accountNonLocked;
    }
+
 
 
 
