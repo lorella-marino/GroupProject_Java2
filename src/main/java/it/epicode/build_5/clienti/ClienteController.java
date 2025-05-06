@@ -68,4 +68,13 @@ public class ClienteController {
             @RequestParam(defaultValue = "asc") String direction) {
         return clienteService.findAllOrderByProvincia(page, size, direction);
     }
+    
+    @GetMapping("/filter")
+    public List<ClienteResponse> filterClienti(
+            @RequestParam(required = false) String fatturatoAnnuale,
+            @RequestParam(required = false) String dataInserimento,
+            @RequestParam(required = false) String dataUltimoContatto,
+            @RequestParam(required = false) String nomeParziale) {
+        return clienteService.filtraClienti(fatturatoAnnuale, dataInserimento, dataUltimoContatto, nomeParziale);
+    }
 }

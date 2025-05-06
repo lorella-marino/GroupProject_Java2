@@ -112,4 +112,16 @@ public class ClienteService {
         
         return pageResult.map(this::toResponse);
     }
+    
+    public List<ClienteResponse> filtraClienti(String fatturato, String inserimento, String ultimoContatto, String nome) {
+        List<Cliente> clienti = clienteRepository.findAll();
+        
+        return clienti.stream()
+                .filter(c -> fatturato == null || c.getFatturatoAnnuale().equalsIgnoreCase(fatturato))
+                .filter(c -> inserimento == null || c.getDataInserimento().equalsIgnoreCase(inserimento))
+                .filter(c -> ultimoContatto == null || c.getDataUltimoContatto().equalsIgnoreCase(ultimoContatto))
+                .filter(c -> nome == null || c.getRagioneSociale().toLowerCase().contains(nome.toLowerCase()))
+                .map(this::toResponse)
+                .toList();
+    }
 }
