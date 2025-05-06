@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Validated
 public class FatturaService {
@@ -64,6 +68,22 @@ public class FatturaService {
 
         fatturaRepository.delete(fattura);
     }
-
-
+    
+    public List<FatturaResponse> filtraFatture(Long clienteId, LocalDate data, String numero, Integer anno,
+                                               Integer importoMin, Integer importoMax, StatoFattura stato) {
+        
+        List<Fattura> tutte = fatturaRepository.findAll();
+        
+        return tutte.stream()
+                .filter(f -> clienteId == null || (f.getCliente() != null && f.getCliente().getId().equals(clienteId)))
+                .filter(f -> data == null || data.equals(f.getData()))
+                .filter(f -> numero == null || numero.equals(f.getNumero()))
+                .filter(f -> stato == null || stato.equals(f.getStato()))
+                .filter(f -> anno == null || (f.getData() != null && f.getData().getYear() == anno))
+                .filter(f -> importoMin == null || f.getImporto() >= importoMin)
+                .filter(f -> importoMax == null || f.getImporto() <= importoMax)
+                .map(f -> toResponse(f, f.getCliente()))
+                .collect(Collectors.toList());
+    }
+    
 }

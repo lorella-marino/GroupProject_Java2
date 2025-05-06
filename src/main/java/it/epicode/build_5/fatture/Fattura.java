@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -17,11 +20,15 @@ public class Fattura {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private String data;
-    private String importo;
+    private int importo;
     private String numero;
     @ManyToOne
     @JsonIgnore
     private Cliente cliente;
-
+    
+    @Enumerated(EnumType.STRING)
+    private StatoFattura stato;
+    
+    private LocalDate data;
+    
 }
