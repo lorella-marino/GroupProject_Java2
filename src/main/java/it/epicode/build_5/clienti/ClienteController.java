@@ -6,12 +6,14 @@ import it.epicode.build_5.indirizzi.IndirizzoRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -71,9 +73,9 @@ public class ClienteController {
     
     @GetMapping("/filter")
     public List<ClienteResponse> filterClienti(
-            @RequestParam(required = false) String fatturatoAnnuale,
-            @RequestParam(required = false) String dataInserimento,
-            @RequestParam(required = false) String dataUltimoContatto,
+            @RequestParam(required = false) Integer fatturatoAnnuale,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInserimento,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataUltimoContatto,
             @RequestParam(required = false) String nomeParziale) {
         return clienteService.filtraClienti(fatturatoAnnuale, dataInserimento, dataUltimoContatto, nomeParziale);
     }

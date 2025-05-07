@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -31,15 +32,18 @@ public class ClienteService {
     private ComuneRepository comuneRepository;
     @Autowired
     private IndirizzoService indirizzoService;
-
+    
     public void uploadLogoAziendale(Long id, MultipartFile fotoProfilo) {
         Cliente dipendente = clienteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente non trovato"));
+        if (fotoProfilo.isEmpty()) {
+            throw new IllegalArgumentException("File vuoto. Caricare un'immagine valida.");
+        }
         String url = cloudinaryService.uploadImage(fotoProfilo);
         dipendente.setLogoAziendale(url);
         clienteRepository.save(dipendente);
     }
-
+    
     public ClienteResponse toResponse(Cliente cliente) {
         return new ClienteResponse(
                 cliente.getId(),
@@ -51,50 +55,50 @@ public class ClienteService {
                 cliente.getFatturatoAnnuale(),
                 cliente.getPec(),
                 cliente.getTelefono(),
-                cliente.getIndirizzoSedeLegale().getVia()+cliente.getIndirizzoSedeLegale().getComune(),
-                cliente.getIndirizzoSedeOperativa().getVia()+cliente.getIndirizzoSedeOperativa().getComune(),
+                cliente.getIndirizzoSedeLegale().getVia() + cliente.getIndirizzoSedeLegale().getComune(),
+                cliente.getIndirizzoSedeOperativa().getVia() + cliente.getIndirizzoSedeOperativa().getComune(),
                 cliente.getTipoCliente());
     }
-
+    
     public List<ClienteResponse> findAll() {
-        List <Cliente> clienteList = clienteRepository.findAll();
+        List<Cliente> clienteList = clienteRepository.findAll();
         return clienteList.stream().map(this::toResponse).toList();
     }
-
+    
     public Cliente findById(Long id) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Cliente non trovato"));
-        return cliente;
+        return clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente non trovato"));
     }
-
+    
     public Cliente create(@Valid ClienteFullRequest clienteFullRequest, String comuneSedeLegale, String comuneSedeOperativa, TipoCliente tipoCliente) {
         Cliente cliente = new Cliente();
         BeanUtils.copyProperties(clienteFullRequest.getClienteRequest(), cliente);
         cliente.setTipoCliente(tipoCliente);
-
+        
         Indirizzo indirizzoSedeLegale = indirizzoService.toEntity(clienteFullRequest.getIndirizzoSedeLegale());
         Comune comune1 = comuneRepository.findByNome(comuneSedeLegale);
+        if (comune1 == null) throw new IllegalArgumentException("Comune sede legale non trovato");
         indirizzoSedeLegale.setComune(comune1);
         cliente.setIndirizzoSedeLegale(indirizzoSedeLegale);
-
+        
         Indirizzo indirizzoSedeOperativa = indirizzoService.toEntity(clienteFullRequest.getIndirizzoSedeOperativa());
         Comune comune2 = comuneRepository.findByNome(comuneSedeOperativa);
+        if (comune2 == null) throw new IllegalArgumentException("Comune sede operativa non trovato");
         indirizzoSedeOperativa.setComune(comune2);
         cliente.setIndirizzoSedeOperativa(indirizzoSedeOperativa);
-
+        
         clienteRepository.save(cliente);
         return cliente;
     }
-
-
+    
     public Cliente update(Long id, @Valid ClienteRequest clienteRequest) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Cliente non trovato"));
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente non trovato"));
         BeanUtils.copyProperties(clienteRequest, cliente);
         clienteRepository.save(cliente);
-       return cliente;
+        return cliente;
     }
-
+    
     public void delete(Long id) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("Cliente non trovato"));
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente non trovato"));
         clienteRepository.delete(cliente);
     }
     
@@ -113,13 +117,13 @@ public class ClienteService {
         return pageResult.map(this::toResponse);
     }
     
-    public List<ClienteResponse> filtraClienti(String fatturato, String inserimento, String ultimoContatto, String nome) {
+    public List<ClienteResponse> filtraClienti(Integer fatturato, LocalDate inserimento, LocalDate ultimoContatto, String nome) {
         List<Cliente> clienti = clienteRepository.findAll();
         
         return clienti.stream()
-                .filter(c -> fatturato == null || c.getFatturatoAnnuale().equalsIgnoreCase(fatturato))
-                .filter(c -> inserimento == null || c.getDataInserimento().equalsIgnoreCase(inserimento))
-                .filter(c -> ultimoContatto == null || c.getDataUltimoContatto().equalsIgnoreCase(ultimoContatto))
+                .filter(c -> fatturato == null || c.getFatturatoAnnuale() == fatturato)
+                .filter(c -> inserimento == null || c.getDataInserimento().equals(inserimento))
+                .filter(c -> ultimoContatto == null || c.getDataUltimoContatto().equals(ultimoContatto))
                 .filter(c -> nome == null || c.getRagioneSociale().toLowerCase().contains(nome.toLowerCase()))
                 .map(this::toResponse)
                 .toList();

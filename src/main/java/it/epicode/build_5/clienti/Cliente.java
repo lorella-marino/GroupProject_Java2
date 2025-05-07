@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,15 +25,15 @@ public class Cliente {
     private String ragioneSociale;
     private String partitaIva;
     private String email;
-    private String dataInserimento;
-    private String dataUltimoContatto;
-    private String fatturatoAnnuale;
+    private LocalDate dataInserimento;
+    private LocalDate dataUltimoContatto;
+    private int fatturatoAnnuale;
     private String pec;
-    private String telefono;
+    private long telefono;
     private String emailContatto;
     private String nomeContatto;
     private String cognomeContatto;
-    private String telefonoContatto;
+    private long telefonoContatto;
     private String logoAziendale;
     @OneToOne (cascade={CascadeType.REMOVE, CascadeType.PERSIST})
     private Indirizzo indirizzoSedeLegale;

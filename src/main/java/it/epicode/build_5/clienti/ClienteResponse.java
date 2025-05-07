@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +20,11 @@ public class ClienteResponse {
     private String ragioneSociale;
     private String partitaIva;
     private String email;
-    private String dataInserimento;
-    private String dataUltimoContatto;
-    private String fatturatoAnnuale;
+    private LocalDate dataInserimento;
+    private LocalDate dataUltimoContatto;
+    private int fatturatoAnnuale;
     private String pec;
-    private String telefono;
+    private long telefono;
     private String indirizzoSedeLegale;
     private String indirizzoSedeOperativa;
     private TipoCliente tipoCliente;
