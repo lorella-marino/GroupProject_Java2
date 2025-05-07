@@ -44,15 +44,22 @@ public class AuthController {
     }*/
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest ) {
+    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest, Role  role, Role role2) {
+        Set<Role> roles;
+        if (role == role2) {
+            roles = Set.of(role);
+        } else {
+            roles = Set.of(role, role2);
+        }
         appUserService.registerUser(
                 registerRequest.getUsername(),
                 registerRequest.getPassword(),
                 registerRequest.getEmail(),
                 registerRequest.getNome(),
                 registerRequest.getCognome(),
-                Set.of( Role.ROLE_USER)
+                roles
         );
+
         return ResponseEntity.ok("Registrazione avvenuta con successo");
     }
 

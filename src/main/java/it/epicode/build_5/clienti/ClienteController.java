@@ -23,38 +23,45 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PatchMapping(path = "/{id}/logoaziendale", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('USER')")
     public void uploadLogoAziendale(@RequestParam Long id, @RequestParam MultipartFile file) {
         clienteService.uploadLogoAziendale(id, file);
     }
 
     @GetMapping
-    private List<ClienteResponse>  findAll() {
+    @PreAuthorize("isAuthenticated()")
+    public List<ClienteResponse>  findAll() {
         return clienteService.findAll();
     }
 
     @GetMapping("/{id}")
-    private Cliente findById(@PathVariable Long id) {
+    @PreAuthorize("isAuthenticated()")
+    public Cliente findById(@PathVariable Long id) {
         return clienteService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('USER')")
     public Cliente create(@RequestBody @Valid ClienteFullRequest clienteFullRequest,  String comuneSedeLegale, String comuneSedeOperativa, TipoCliente tipoCliente) {
         return clienteService.create(clienteFullRequest, comuneSedeLegale, comuneSedeOperativa, tipoCliente);
     }
 
     @PutMapping("/{id}")
-    private Cliente update(@PathVariable Long id, @RequestBody @Valid ClienteRequest clienteRequest) {
+    @PreAuthorize("hasRole('USER')")
+    public Cliente update(@PathVariable Long id, @RequestBody @Valid ClienteRequest clienteRequest) {
         return clienteService.update(id, clienteRequest);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus (HttpStatus.NO_CONTENT)
-    private void delete(@PathVariable Long id) {
+    @PreAuthorize("isAuthenticated()")
+    public void delete(@PathVariable Long id) {
         clienteService.delete(id);
     }
     
     @GetMapping("/sorted")
+    @PreAuthorize("isAuthenticated()")
     public Page<ClienteResponse> getSortedClients(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -64,6 +71,7 @@ public class ClienteController {
     }
     
     @GetMapping("/sorted/provincia")
+    @PreAuthorize("isAuthenticated()")
     public Page<ClienteResponse> getSortedByProvincia(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -72,6 +80,7 @@ public class ClienteController {
     }
     
     @GetMapping("/filter")
+    @PreAuthorize("isAuthenticated()")
     public List<ClienteResponse> filterClienti(
             @RequestParam(required = false) Integer fatturatoAnnuale,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInserimento,

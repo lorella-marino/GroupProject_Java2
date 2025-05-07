@@ -21,22 +21,26 @@ public class FatturaController {
 
     @PostMapping("/clienti/{idCliente}")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public FatturaResponse create(@RequestBody @Valid FatturaRequest fatturaRequest, @PathVariable Long idCliente) {
         return fatturaService.create(fatturaRequest, idCliente);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public FatturaResponse update(@PathVariable Long id, @RequestBody @Valid FatturaRequest fatturaRequest) {
         return fatturaService.update(id, fatturaRequest);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         fatturaService.delete(id);
     }
     
     @GetMapping("/filter")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<FatturaResponse> filtraFatture(
             @RequestParam(required = false) Long clienteId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
