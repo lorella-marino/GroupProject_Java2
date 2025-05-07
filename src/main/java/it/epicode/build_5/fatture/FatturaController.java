@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fatture")
+@RequestMapping("/api/fatture")
 public class FatturaController {
 
     @Autowired
@@ -52,6 +52,5 @@ public class FatturaController {
     ) {
         return fatturaService.filtraFatture(clienteId, data, numero, anno, importoMin, importoMax, stato);
     }
-    
 }
 

@@ -22,6 +22,4 @@ public class Indirizzo {
     private String cap;
     @ManyToOne
     private Comune comune;
-
-
 }
