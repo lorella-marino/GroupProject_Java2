@@ -42,7 +42,7 @@ public class AppUserService {
         appUserRepository.save(dipendente);
     }
 
-    public AppUser registerAdmin(String username, String password, Set<Role> roles) {
+    public AppUser registerDefault(String username, String password, Set<Role> roles) {
         if (appUserRepository.existsByUsername(username)) {
             throw new EntityExistsException("Username già in uso");
         }
