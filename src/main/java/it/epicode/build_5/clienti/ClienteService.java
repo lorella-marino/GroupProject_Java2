@@ -55,8 +55,8 @@ public class ClienteService {
                 cliente.getFatturatoAnnuale(),
                 cliente.getPec(),
                 cliente.getTelefono(),
-                cliente.getIndirizzoSedeLegale().getVia() + cliente.getIndirizzoSedeLegale().getComune(),
-                cliente.getIndirizzoSedeOperativa().getVia() + cliente.getIndirizzoSedeOperativa().getComune(),
+                "(" + cliente.getIndirizzoSedeLegale().getComune().getProvincia().getSigla() + ") " + cliente.getIndirizzoSedeLegale().getComune().getNome(),
+                "(" + cliente.getIndirizzoSedeOperativa().getComune().getProvincia().getSigla() + ") " + cliente.getIndirizzoSedeOperativa().getComune().getNome(),
                 cliente.getTipoCliente());
     }
     
@@ -106,15 +106,6 @@ public class ClienteService {
         Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return clienteRepository.findAll(pageable).map(this::toResponse);
-    }
-    
-    public Page<ClienteResponse> findAllOrderByProvincia(int page, int size, String direction) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Cliente> pageResult = direction.equalsIgnoreCase("desc") ?
-                clienteRepository.orderByProvinciaSedeLegaleDesc(pageable) :
-                clienteRepository.orderByProvinciaSedeLegaleAsc(pageable);
-        
-        return pageResult.map(this::toResponse);
     }
     
     public List<ClienteResponse> filtraClienti(Integer fatturato, LocalDate inserimento, LocalDate ultimoContatto, String nome) {
