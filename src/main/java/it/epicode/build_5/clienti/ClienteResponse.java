@@ -24,7 +24,7 @@ public class ClienteResponse {
     private LocalDate dataUltimoContatto;
     private int fatturatoAnnuale;
     private String pec;
-    private long telefono;
+    private String telefono;
     private String indirizzoSedeLegale;
     private String indirizzoSedeOperativa;
     private TipoCliente tipoCliente;

@@ -70,15 +70,6 @@ public class ClienteController {
         return clienteService.findAllSorted(page, size, sortBy, direction);
     }
     
-    @GetMapping("/sorted/provincia")
-    @PreAuthorize("isAuthenticated()")
-    public Page<ClienteResponse> getSortedByProvincia(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "asc") String direction) {
-        return clienteService.findAllOrderByProvincia(page, size, direction);
-    }
-    
     @GetMapping("/filter")
     @PreAuthorize("isAuthenticated()")
     public List<ClienteResponse> filterClienti(
