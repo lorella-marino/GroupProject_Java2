@@ -5,9 +5,6 @@ import it.epicode.build_5.clienti.ClienteRepository;
 import it.epicode.build_5.clienti.TipoCliente;
 import it.epicode.build_5.indirizzi.Indirizzo;
 import it.epicode.build_5.indirizzi.IndirizzoService;
-import it.epicode.build_5.fatture.Fattura;
-import it.epicode.build_5.fatture.FatturaRepository;
-import it.epicode.build_5.fatture.StatoFattura;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -22,9 +19,6 @@ public class DataLoader implements CommandLineRunner {
     
     @Autowired
     private IndirizzoService indirizzoService;
-    
-    @Autowired
-    private FatturaRepository fatturaRepository;
     
     @Override
     public void run(String... args) throws Exception {
@@ -73,12 +67,6 @@ public class DataLoader implements CommandLineRunner {
             cliente2.setIndirizzoSedeOperativa(operativa2);
             
             clienteRepository.save(cliente2);
-            
-            fatturaRepository.save(new Fattura(null, 1200, "FAT-TC001", cliente1, StatoFattura.PAGATA, LocalDate.of(2023, 3, 15)));
-            fatturaRepository.save(new Fattura(null, 2400, "FAT-TC002", cliente1, StatoFattura.NON_PAGATA, LocalDate.of(2024, 4, 10)));
-
-            fatturaRepository.save(new Fattura(null, 1500, "FAT-GF001", cliente2, StatoFattura.PAGATA, LocalDate.of(2022, 9, 5)));
-            fatturaRepository.save(new Fattura(null, 1800, "FAT-GF002", cliente2, StatoFattura.NON_PAGATA, LocalDate.of(2025, 2, 1)));
         }
     }
 }
