@@ -85,5 +85,9 @@ public class FatturaService {
                 .map(f -> toResponse(f, f.getCliente()))
                 .collect(Collectors.toList());
     }
+
+    public Fattura findById(Long id) {
+        return fatturaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fattura non trovata"));
+    }
     
 }

@@ -52,5 +52,11 @@ public class FatturaController {
     ) {
         return fatturaService.filtraFatture(clienteId, data, numero, anno, importoMin, importoMax, stato);
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Fattura findById(@PathVariable Long id) {
+        return fatturaService.findById(id);
+    }
 }
 

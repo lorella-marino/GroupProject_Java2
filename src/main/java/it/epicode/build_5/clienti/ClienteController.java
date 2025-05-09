@@ -24,7 +24,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PatchMapping(path = "/{id}/logoaziendale", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public void uploadLogoAziendale(@RequestParam Long id, @RequestParam MultipartFile file) {
         clienteService.uploadLogoAziendale(id, file);
     }
