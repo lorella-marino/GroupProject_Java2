@@ -110,16 +110,16 @@ public class ClienteService {
         Pageable pageable = PageRequest.of(page, size, sort);
         return clienteRepository.findAll(pageable).map(this::toResponse);
     }
-
-    public Page<ClienteResponse> filtraClienti(
-            Integer fatturatoMinimo, Integer annoInserimento, Integer annoUltimoContatto,
-            String nome, int page, int size, String sortBy, String direction) {
-
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        return clienteRepository.filtraClientiAvanzato(
-                fatturatoMinimo, annoInserimento, annoUltimoContatto, nome, pageable
-        ).map(this::toResponse);
+    
+    public List<ClienteResponse> filtraClienti(Integer fatturato, LocalDate inserimento, LocalDate ultimoContatto, String nome) {
+        List<Cliente> clienti = clienteRepository.findAll();
+        
+        return clienti.stream()
+                .filter(c -> fatturato == null || c.getFatturatoAnnuale() == fatturato)
+                .filter(c -> inserimento == null || c.getDataInserimento().equals(inserimento))
+                .filter(c -> ultimoContatto == null || c.getDataUltimoContatto().equals(ultimoContatto))
+                .filter(c -> nome == null || c.getRagioneSociale().toLowerCase().contains(nome.toLowerCase()))
+                .map(this::toResponse)
+                .toList();
     }
 }

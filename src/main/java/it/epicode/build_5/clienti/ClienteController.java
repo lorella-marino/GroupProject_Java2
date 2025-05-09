@@ -70,22 +70,14 @@ public class ClienteController {
             @RequestParam(defaultValue = "asc") String direction) {
         return clienteService.findAllSorted(page, size, sortBy, direction);
     }
-
+    
     @GetMapping("/filter")
     @PreAuthorize("isAuthenticated()")
-    public Page<ClienteResponse> filterClienti(
-            @RequestParam(required = false) Integer fatturatoMinimo,
-            @RequestParam(required = false) Integer annoInserimento,
-            @RequestParam(required = false) Integer annoUltimoContatto,
-            @RequestParam(required = false) String nomeParziale,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "ragioneSociale") String sortBy,
-            @RequestParam(defaultValue = "asc") String direction) {
-
-        return clienteService.filtraClienti(
-                fatturatoMinimo, annoInserimento, annoUltimoContatto, nomeParziale,
-                page, size, sortBy, direction
-        );
+    public List<ClienteResponse> filterClienti(
+            @RequestParam(required = false) Integer fatturatoAnnuale,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInserimento,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataUltimoContatto,
+            @RequestParam(required = false) String nomeParziale) {
+        return clienteService.filtraClienti(fatturatoAnnuale, dataInserimento, dataUltimoContatto, nomeParziale);
     }
 }
