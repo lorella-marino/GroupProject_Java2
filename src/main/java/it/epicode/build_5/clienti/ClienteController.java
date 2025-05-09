@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,7 +44,7 @@ public class ClienteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('USER')")
-    public Cliente create(@RequestBody @Valid ClienteFullRequest clienteFullRequest,  String comuneSedeLegale, String comuneSedeOperativa, TipoCliente tipoCliente) {
+    public Cliente create(@RequestBody @Valid ClienteFullRequest clienteFullRequest, String comuneSedeLegale, String comuneSedeOperativa, TipoCliente tipoCliente) {
         return clienteService.create(clienteFullRequest, comuneSedeLegale, comuneSedeOperativa, tipoCliente);
     }
 
@@ -69,14 +70,22 @@ public class ClienteController {
             @RequestParam(defaultValue = "asc") String direction) {
         return clienteService.findAllSorted(page, size, sortBy, direction);
     }
-    
+
     @GetMapping("/filter")
     @PreAuthorize("isAuthenticated()")
-    public List<ClienteResponse> filterClienti(
-            @RequestParam(required = false) Integer fatturatoAnnuale,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInserimento,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataUltimoContatto,
-            @RequestParam(required = false) String nomeParziale) {
-        return clienteService.filtraClienti(fatturatoAnnuale, dataInserimento, dataUltimoContatto, nomeParziale);
+    public Page<ClienteResponse> filterClienti(
+            @RequestParam(required = false) Integer fatturatoMinimo,
+            @RequestParam(required = false) Integer annoInserimento,
+            @RequestParam(required = false) Integer annoUltimoContatto,
+            @RequestParam(required = false) String nomeParziale,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "ragioneSociale") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        return clienteService.filtraClienti(
+                fatturatoMinimo, annoInserimento, annoUltimoContatto, nomeParziale,
+                page, size, sortBy, direction
+        );
     }
 }

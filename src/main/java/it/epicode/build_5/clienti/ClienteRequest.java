@@ -42,5 +42,6 @@ public class ClienteRequest {
     private String cognomeContatto;
     @NotBlank
     private String telefonoContatto;
+    private String logoAziendale = "https://media.istockphoto.com/id/2151669184/it/vettoriale/illustrazione-piatta-vettoriale-in-scala-di-grigi-avatar-profilo-utente-icona-della.jpg?s=612x612&w=0&k=20&c=uGwDLLLqQGws1Jll6wFAQq_Nqj72WI7n6iexvyjoyE4=";
 }
 

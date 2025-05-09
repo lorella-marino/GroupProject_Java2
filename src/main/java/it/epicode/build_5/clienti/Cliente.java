@@ -46,12 +46,13 @@ public class Cliente {
     @Column(name = "telefono_contatto")
     private String telefonoContatto;
     private String logoAziendale;
-    @OneToOne (cascade={CascadeType.REMOVE})
+    @OneToOne (cascade={CascadeType.REMOVE, CascadeType.PERSIST})
     private Indirizzo indirizzoSedeLegale;
-    @OneToOne (cascade={CascadeType.REMOVE})
+    @OneToOne (cascade={CascadeType.REMOVE, CascadeType.PERSIST})
     private Indirizzo indirizzoSedeOperativa;
     @Enumerated (EnumType.STRING)
     private TipoCliente tipoCliente;
     @OneToMany (cascade = CascadeType.PERSIST)
     private List<Fattura> fatture = new ArrayList<>();
+
 }
