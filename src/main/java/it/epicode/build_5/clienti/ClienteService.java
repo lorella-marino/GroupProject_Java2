@@ -115,7 +115,7 @@ public class ClienteService {
         List<Cliente> clienti = clienteRepository.findAll();
         
         return clienti.stream()
-                .filter(c -> fatturato == null || c.getFatturatoAnnuale() == fatturato)
+                .filter(c -> fatturato == null || c.getFatturatoAnnuale() >= fatturato)
                 .filter(c -> inserimento == null || c.getDataInserimento().equals(inserimento))
                 .filter(c -> ultimoContatto == null || c.getDataUltimoContatto().equals(ultimoContatto))
                 .filter(c -> nome == null || c.getRagioneSociale().toLowerCase().contains(nome.toLowerCase()))
