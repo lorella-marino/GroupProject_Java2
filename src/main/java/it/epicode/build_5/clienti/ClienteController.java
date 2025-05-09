@@ -43,20 +43,20 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public Cliente create(@RequestBody @Valid ClienteFullRequest clienteFullRequest, String comuneSedeLegale, String comuneSedeOperativa, TipoCliente tipoCliente) {
         return clienteService.create(clienteFullRequest, comuneSedeLegale, comuneSedeOperativa, tipoCliente);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     public Cliente update(@PathVariable Long id, @RequestBody @Valid ClienteRequest clienteRequest) {
         return clienteService.update(id, clienteRequest);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus (HttpStatus.NO_CONTENT)
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         clienteService.delete(id);
     }
