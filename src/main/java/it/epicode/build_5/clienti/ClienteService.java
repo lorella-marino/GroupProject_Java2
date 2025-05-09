@@ -92,12 +92,26 @@ public class ClienteService {
         clienteRepository.save(cliente);
         return cliente;
     }
-    
+
     public Cliente update(Long id, @Valid ClienteRequest clienteRequest) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente non trovato"));
-        BeanUtils.copyProperties(clienteRequest, cliente);
-        clienteRepository.save(cliente);
-        return cliente;
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente non trovato"));
+
+        cliente.setRagioneSociale(clienteRequest.getRagioneSociale());
+        cliente.setPartitaIva(clienteRequest.getPartitaIva());
+        cliente.setEmail(clienteRequest.getEmail());
+        cliente.setDataInserimento(clienteRequest.getDataInserimento());
+        cliente.setDataUltimoContatto(LocalDate.now());
+        cliente.setFatturatoAnnuale(clienteRequest.getFatturatoAnnuale());
+        cliente.setPec(clienteRequest.getPec());
+        cliente.setTelefono(clienteRequest.getTelefono());
+        cliente.setEmailContatto(clienteRequest.getEmailContatto());
+        cliente.setNomeContatto(clienteRequest.getNomeContatto());
+        cliente.setCognomeContatto(clienteRequest.getCognomeContatto());
+        cliente.setTelefonoContatto(clienteRequest.getTelefonoContatto());
+        cliente.setLogoAziendale(clienteRequest.getLogoAziendale());
+
+        return clienteRepository.save(cliente);
     }
     
     public void delete(Long id) {
